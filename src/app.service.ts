@@ -14,4 +14,20 @@ export class AppService {
     const newUser =  new this.userModel(user)
     return newUser.save()
   }
+
+  // reading the user collection
+  async readUser(){
+    return this.userModel.find({}).then((user)=>{return user}).catch((err)=>console.log(err))
+  }
+
+  // updating the data
+  async updateUser(id, data):Promise<User>{
+    return this.userModel.findByIdAndUpdate(id,data,{new:true});
+  }
+
+  // deleting the user
+  async deleteUser(id){
+      return this.userModel.findByIdAndRemove(id);
+  }
+
 }

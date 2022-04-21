@@ -24,6 +24,15 @@ let AppService = class AppService {
         const newUser = new this.userModel(user);
         return newUser.save();
     }
+    async readUser() {
+        return this.userModel.find({}).then((user) => { return user; }).catch((err) => console.log(err));
+    }
+    async updateUser(id, data) {
+        return this.userModel.findByIdAndUpdate(id, data, { new: true });
+    }
+    async deleteUser(id) {
+        return this.userModel.findByIdAndRemove(id);
+    }
 };
 AppService = __decorate([
     (0, common_1.Injectable)(),
