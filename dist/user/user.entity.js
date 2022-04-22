@@ -9,25 +9,32 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.UserSchema = exports.User = void 0;
-const mongoose_1 = require("@nestjs/mongoose");
-let User = class User {
+exports.User = void 0;
+const typeorm_1 = require("typeorm");
+let User = class User extends typeorm_1.BaseEntity {
 };
 __decorate([
-    (0, mongoose_1.Prop)(),
-    __metadata("design:type", String)
-], User.prototype, "username", void 0);
+    (0, typeorm_1.ObjectIdColumn)(),
+    __metadata("design:type", typeorm_1.ObjectID)
+], User.prototype, "id", void 0);
 __decorate([
-    (0, mongoose_1.Prop)(),
+    (0, typeorm_1.Column)(),
     __metadata("design:type", String)
-], User.prototype, "description", void 0);
+], User.prototype, "name", void 0);
 __decorate([
-    (0, mongoose_1.Prop)({ default: Date.now }),
-    __metadata("design:type", Date)
-], User.prototype, "date_added", void 0);
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", String)
+], User.prototype, "lastName", void 0);
+__decorate([
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", String)
+], User.prototype, "email", void 0);
+__decorate([
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", String)
+], User.prototype, "phone", void 0);
 User = __decorate([
-    (0, mongoose_1.Schema)()
+    (0, typeorm_1.Entity)()
 ], User);
 exports.User = User;
-exports.UserSchema = mongoose_1.SchemaFactory.createForClass(User);
-//# sourceMappingURL=user.models.js.map
+//# sourceMappingURL=user.entity.js.map

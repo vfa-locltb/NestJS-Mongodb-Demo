@@ -1,13 +1,22 @@
 import { Module } from '@nestjs/common';
-import { MongooseModule } from '@nestjs/mongoose';
+import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { UserSchema } from './user.models';
+import { join } from 'path';
+import { UserModule } from './user/user.module';
 
 @Module({
-  imports: [MongooseModule.forRoot('mongodb+srv://chuongnvt:jlcjQt5uax0lfkxt@cluster0.uosty.mongodb.net/myFirstDatabase?retryWrites=true&w=majority'),
-            MongooseModule.forFeature([{name:'user',schema: UserSchema}]),
-],
+  imports: [UserModule, TypeOrmModule.forRoot({
+    name: 'default',
+    type: 'mongodb',
+    host: 'localhost',
+    port: 27017,
+    database: 'nestjs-mongodb-demo',
+    useNewUrlParser: true,
+    autoLoadEntities: true,
+    useUnifiedTopology: true,
+    entities: [join(__dirname,'**/**.entity{.ts,.js}')]
+  }),],
   controllers: [AppController],
   providers: [AppService],
 })

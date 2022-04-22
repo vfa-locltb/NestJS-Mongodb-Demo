@@ -8,60 +8,24 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var __param = (this && this.__param) || function (paramIndex, decorator) {
-    return function (target, key) { decorator(target, key, paramIndex); }
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AppController = void 0;
 const common_1 = require("@nestjs/common");
 const app_service_1 = require("./app.service");
-const user_models_1 = require("./user.models");
-const userUpdate_dto_1 = require("./userUpdate.dto");
 let AppController = class AppController {
     constructor(appService) {
         this.appService = appService;
     }
-    async createUser(userDto) {
-        return this.appService.createUser(userDto);
-    }
-    readUser() {
-        return this.appService.readUser();
-    }
-    async updateUser(id, updateData) {
-        return this.appService.updateUser(id, updateData);
-    }
-    async deleteUser(id) {
-        return this.appService.deleteUser(id);
+    getHello() {
+        return this.appService.getHello();
     }
 };
-__decorate([
-    (0, common_1.Post)(),
-    __param(0, (0, common_1.Body)()),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [user_models_1.User]),
-    __metadata("design:returntype", Promise)
-], AppController.prototype, "createUser", null);
 __decorate([
     (0, common_1.Get)(),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
-    __metadata("design:returntype", void 0)
-], AppController.prototype, "readUser", null);
-__decorate([
-    (0, common_1.Put)(':id'),
-    __param(0, (0, common_1.Param)('id')),
-    __param(1, (0, common_1.Body)()),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, userUpdate_dto_1.UserUpdateDto]),
-    __metadata("design:returntype", Promise)
-], AppController.prototype, "updateUser", null);
-__decorate([
-    (0, common_1.Delete)(':id'),
-    __param(0, (0, common_1.Param)('id')),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String]),
-    __metadata("design:returntype", Promise)
-], AppController.prototype, "deleteUser", null);
+    __metadata("design:returntype", String)
+], AppController.prototype, "getHello", null);
 AppController = __decorate([
     (0, common_1.Controller)(),
     __metadata("design:paramtypes", [app_service_1.AppService])
