@@ -1,8 +1,9 @@
 import { Module } from '@nestjs/common';
+import { JwtModule } from '@nestjs/jwt';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { join } from 'path';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { join } from 'path';
 import { UserModule } from './user/user.module';
 
 @Module({
@@ -11,12 +12,17 @@ import { UserModule } from './user/user.module';
     type: 'mongodb',
     host: 'localhost',
     port: 27017,
-    database: 'nestjs-mongodb-demo',
+    database: 'nestjs-auth-jwt',
     useNewUrlParser: true,
     autoLoadEntities: true,
     useUnifiedTopology: true,
     entities: [join(__dirname,'**/**.entity{.ts,.js}')]
-  }),],
+  }),
+    JwtModule.register({
+      secret: 'secret',
+      signOptions: {expiresIn: '1d'},
+    })
+],
   controllers: [AppController],
   providers: [AppService],
 })

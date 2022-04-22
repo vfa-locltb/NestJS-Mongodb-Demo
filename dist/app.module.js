@@ -8,10 +8,11 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AppModule = void 0;
 const common_1 = require("@nestjs/common");
+const jwt_1 = require("@nestjs/jwt");
 const typeorm_1 = require("@nestjs/typeorm");
+const path_1 = require("path");
 const app_controller_1 = require("./app.controller");
 const app_service_1 = require("./app.service");
-const path_1 = require("path");
 const user_module_1 = require("./user/user.module");
 let AppModule = class AppModule {
 };
@@ -22,12 +23,17 @@ AppModule = __decorate([
                 type: 'mongodb',
                 host: 'localhost',
                 port: 27017,
-                database: 'nestjs-mongodb-demo',
+                database: 'nestjs-auth-jwt',
                 useNewUrlParser: true,
                 autoLoadEntities: true,
                 useUnifiedTopology: true,
                 entities: [(0, path_1.join)(__dirname, '**/**.entity{.ts,.js}')]
-            }),],
+            }),
+            jwt_1.JwtModule.register({
+                secret: 'secret',
+                signOptions: { expiresIn: '1d' },
+            })
+        ],
         controllers: [app_controller_1.AppController],
         providers: [app_service_1.AppService],
     })
