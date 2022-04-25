@@ -7,6 +7,7 @@ export declare class UserController {
     private readonly userService;
     private jwtService;
     SERVER_URL: string;
+    private readonly sizes;
     constructor(userService: UserService, jwtService: JwtService);
     getAllUser(): Promise<User[]>;
     register(name: string, email: string, password: string): Promise<User>;
@@ -28,4 +29,5 @@ export declare class UserController {
         message: string;
     }>;
     uploadFile(id: any, file: any): Promise<User>;
+    private saveImage;
 }

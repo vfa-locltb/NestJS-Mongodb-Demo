@@ -8,8 +8,12 @@ import { log } from 'console';
 import { Observable, of } from 'rxjs';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from  'multer';
-import { v4 as uuidv4 } from 'uuid';
 import { extname } from  'path';
+import { readFile, writeFile } from 'fs';
+import { promisify } from 'util';
+const readFileAsync = promisify(readFile);
+const writeFileAsync = promisify(writeFile);
+import * as sharp from 'sharp';
 
 
 
@@ -17,9 +21,13 @@ import { extname } from  'path';
 @Controller('user')
 export class UserController {
   SERVER_URL:  string  =  "http://localhost:3000/";
+  private readonly sizes: string [];
   constructor(private readonly userService: UserService,
               private jwtService: JwtService,
-    ) {}
+              
+    ) {
+      this.sizes = ['50X50', '100X100', '200X200'];
+    }
 
     @Get('/')
     async getAllUser(): Promise<User[]> {
@@ -98,10 +106,21 @@ export class UserController {
   }))
   async uploadFile(@Param('id') id, @UploadedFile() file){
     // return of({imagePath: file.path})
+    const [, ext] = file.mimetype.split('/');
+    this.saveImage(ext, file);
     return this.userService.setAvatar(id,`${this.SERVER_URL}${file.path}`);
   }
 
-
+private saveImage(ext: string, @UploadedFile() file): void{
+    if(['jpeg', 'png','png'].includes(ext)){
+      this.sizes.forEach((s:string)=>{
+        const [size] = s.split('X');
+        readFileAsync(file.path).then((b: Buffer)=>{
+          return sharp(b).resize(+size).toFile(`./uploads/profileimages/${s}/${file.filename}`);
+        }).then(console.log).catch(console.error);
+      });
+    }
+}
 
 
  
