@@ -6,7 +6,9 @@ import { Request, Response } from 'express';
 export declare class UserController {
     private readonly userService;
     private jwtService;
+    SERVER_URL: string;
     constructor(userService: UserService, jwtService: JwtService);
+    getAllUser(): Promise<User[]>;
     register(name: string, email: string, password: string): Promise<User>;
     login(email: string, password: string, Response: Response): Promise<{
         message: string;
@@ -14,6 +16,7 @@ export declare class UserController {
     user(request: Request): Promise<{
         id: import("typeorm").ObjectID;
         name: string;
+        profileImage: string;
         email: string;
     }>;
     userById(id: string): Promise<{
@@ -24,4 +27,5 @@ export declare class UserController {
     logout(response: Response): Promise<{
         message: string;
     }>;
+    uploadFile(id: any, file: any): Promise<User>;
 }

@@ -21,11 +21,18 @@ let UserService = class UserService {
     constructor(userRepository) {
         this.userRepository = userRepository;
     }
+    async getAllUser() {
+        return await this.userRepository.find();
+    }
     async create(data) {
         return await this.userRepository.save(data);
     }
     async findOne(conditions) {
         return await this.userRepository.findOne(conditions);
+    }
+    async setAvatar(id, avatarUrl) {
+        this.userRepository.update(id, { profileImage: avatarUrl });
+        return this.findOne(id);
     }
 };
 UserService = __decorate([

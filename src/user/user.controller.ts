@@ -1,19 +1,30 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, BadRequestException,Res, Req, UnauthorizedException, HttpStatus } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, BadRequestException,Res, Req, UnauthorizedException, HttpStatus, UseInterceptors, UploadedFile } from '@nestjs/common';
 import { UserService } from './user.service';
 import * as bcrypt from 'bcrypt';
 import { User } from './entities/user.entity';
 import { JwtService } from '@nestjs/jwt';
 import { Request, Response } from 'express';
 import { log } from 'console';
-import { DeleteResult } from 'typeorm';
+import { Observable, of } from 'rxjs';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { diskStorage } from  'multer';
+import { v4 as uuidv4 } from 'uuid';
+import { extname } from  'path';
+
+
 
 
 @Controller('user')
 export class UserController {
+  SERVER_URL:  string  =  "http://localhost:3000/";
   constructor(private readonly userService: UserService,
               private jwtService: JwtService,
     ) {}
 
+    @Get('/')
+    async getAllUser(): Promise<User[]> {
+      return this.userService.getAllUser();
+    }
   @Post('register')
   async register(@Body('name')name: string, @Body('email') email: string, @Body('password') password: string):Promise<User> {
     const hashedPassword = await bcrypt.hash(password, 12);
@@ -73,6 +84,25 @@ export class UserController {
       message: 'Successfully logged out',
     }
   }
+
+
+  @Post(':id/upload')
+  @UseInterceptors(FileInterceptor('file',{
+    storage: diskStorage({
+      destination:'./uploads/profileimages',
+      filename: (req, file, cb) => {
+          const randomName = Array(32).fill(null).map(() => (Math.round(Math.random() * 16)).toString(16)).join('')
+          return cb(null, `${randomName}${extname(file.originalname)}`)
+      }
+    }),
+  }))
+  async uploadFile(@Param('id') id, @UploadedFile() file){
+    // return of({imagePath: file.path})
+    return this.userService.setAvatar(id,`${this.SERVER_URL}${file.path}`);
+  }
+
+
+
 
  
 }

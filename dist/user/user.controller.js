@@ -28,10 +28,17 @@ const common_1 = require("@nestjs/common");
 const user_service_1 = require("./user.service");
 const bcrypt = require("bcrypt");
 const jwt_1 = require("@nestjs/jwt");
+const platform_express_1 = require("@nestjs/platform-express");
+const multer_1 = require("multer");
+const path_1 = require("path");
 let UserController = class UserController {
     constructor(userService, jwtService) {
         this.userService = userService;
         this.jwtService = jwtService;
+        this.SERVER_URL = "http://localhost:3000/";
+    }
+    async getAllUser() {
+        return this.userService.getAllUser();
     }
     async register(name, email, password) {
         const hashedPassword = await bcrypt.hash(password, 12);
@@ -81,7 +88,16 @@ let UserController = class UserController {
             message: 'Successfully logged out',
         };
     }
+    async uploadFile(id, file) {
+        return this.userService.setAvatar(id, `${this.SERVER_URL}${file.path}`);
+    }
 };
+__decorate([
+    (0, common_1.Get)('/'),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", Promise)
+], UserController.prototype, "getAllUser", null);
 __decorate([
     (0, common_1.Post)('register'),
     __param(0, (0, common_1.Body)('name')),
@@ -121,6 +137,23 @@ __decorate([
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "logout", null);
+__decorate([
+    (0, common_1.Post)(':id/upload'),
+    (0, common_1.UseInterceptors)((0, platform_express_1.FileInterceptor)('file', {
+        storage: (0, multer_1.diskStorage)({
+            destination: './uploads/profileimages',
+            filename: (req, file, cb) => {
+                const randomName = Array(32).fill(null).map(() => (Math.round(Math.random() * 16)).toString(16)).join('');
+                return cb(null, `${randomName}${(0, path_1.extname)(file.originalname)}`);
+            }
+        }),
+    })),
+    __param(0, (0, common_1.Param)('id')),
+    __param(1, (0, common_1.UploadedFile)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, Object]),
+    __metadata("design:returntype", Promise)
+], UserController.prototype, "uploadFile", null);
 UserController = __decorate([
     (0, common_1.Controller)('user'),
     __metadata("design:paramtypes", [user_service_1.UserService,
