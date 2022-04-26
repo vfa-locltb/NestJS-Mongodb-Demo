@@ -16,7 +16,7 @@ let AppModule = class AppModule {
 };
 AppModule = __decorate([
     (0, common_1.Module)({
-        imports: [mongoose_1.MongooseModule.forRoot('mongodb+srv://chuongnvt:jlcjQt5uax0lfkxt@cluster0.uosty.mongodb.net/myFirstDatabase?retryWrites=true&w=majority'),
+        imports: [mongoose_1.MongooseModule.forRoot('mongodb+srv://chuongnvt:chuongnvt@cluster0.uosty.mongodb.net/nestjs-auth-jwt?retryWrites=true&w=majority'),
             mongoose_1.MongooseModule.forFeature([{ name: 'user', schema: user_models_1.UserSchema }]),
         ],
         controllers: [app_controller_1.AppController],

@@ -3,13 +3,13 @@ import { AppService } from './app.service';
 import { User } from './user.models';
 import { UserUpdateDto } from './userUpdate.dto';
 
-@Controller()
+@Controller('user')
 export class AppController {
   constructor(private readonly appService: AppService) {}
 
-  @Post()
-  async createUser(@Body() userDto: User){
-    return this.appService.createUser(userDto)
+  @Post('/create')
+  async createUser(@Body() userDto: User):Promise<User>{
+    return await this.appService.create(userDto)
   }
   
   @Get()

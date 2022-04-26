@@ -10,7 +10,7 @@ export class AppService {
   ){}
 
   // creating a user
-  async createUser(user: User): Promise<User>{
+  async create(user: User): Promise<User>{
     const newUser =  new this.userModel(user)
     return newUser.save()
   }

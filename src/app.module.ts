@@ -5,7 +5,7 @@ import { AppService } from './app.service';
 import { UserSchema } from './user.models';
 
 @Module({
-  imports: [MongooseModule.forRoot('mongodb+srv://chuongnvt:jlcjQt5uax0lfkxt@cluster0.uosty.mongodb.net/myFirstDatabase?retryWrites=true&w=majority'),
+  imports: [MongooseModule.forRoot('mongodb+srv://chuongnvt:chuongnvt@cluster0.uosty.mongodb.net/nestjs-auth-jwt?retryWrites=true&w=majority'),
             MongooseModule.forFeature([{name:'user',schema: UserSchema}]),
 ],
   controllers: [AppController],

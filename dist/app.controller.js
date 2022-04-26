@@ -22,7 +22,7 @@ let AppController = class AppController {
         this.appService = appService;
     }
     async createUser(userDto) {
-        return this.appService.createUser(userDto);
+        return await this.appService.create(userDto);
     }
     readUser() {
         return this.appService.readUser();
@@ -35,7 +35,7 @@ let AppController = class AppController {
     }
 };
 __decorate([
-    (0, common_1.Post)(),
+    (0, common_1.Post)('/create'),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [user_models_1.User]),
@@ -63,7 +63,7 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], AppController.prototype, "deleteUser", null);
 AppController = __decorate([
-    (0, common_1.Controller)(),
+    (0, common_1.Controller)('user'),
     __metadata("design:paramtypes", [app_service_1.AppService])
 ], AppController);
 exports.AppController = AppController;

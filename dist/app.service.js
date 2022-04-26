@@ -20,7 +20,7 @@ let AppService = class AppService {
     constructor(userModel) {
         this.userModel = userModel;
     }
-    async createUser(user) {
+    async create(user) {
         const newUser = new this.userModel(user);
         return newUser.save();
     }
