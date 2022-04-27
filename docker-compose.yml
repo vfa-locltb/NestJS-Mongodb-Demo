@@ -32,3 +32,8 @@ services:
 networks:
   node-webapp-network:
     driver: bridge
+
+    # docker compose up --build
+    # npm i --save @nestjs/mongoose mongoose
+    # npm i --save @nestjs/typeorm typeorm
+    # npm run start:dev
