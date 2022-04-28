@@ -15,4 +15,5 @@ export declare class UserService {
     private findUserByEmail;
     private validatePassword;
     private mailExists;
+    setAvatar(id: string, avatarUrl: string): Observable<User>;
 }

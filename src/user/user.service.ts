@@ -94,4 +94,10 @@ findOne(id): Observable<User> {
   )
 }
 
+setAvatar(id: string, avatarUrl: string):Observable<User>{
+  this.userRepository.update(id,{profileImage: avatarUrl});
+ return this.findOne(id);
+} 
+
+
 }

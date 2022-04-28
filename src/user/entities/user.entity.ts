@@ -11,6 +11,9 @@ export class User {
     @Column({unique: true})
     email: string;
 
+    @Column()
+    profileImage: string;
+
     @Column({select: false})
     password: string;
 

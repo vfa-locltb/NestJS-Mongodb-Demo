@@ -92,6 +92,10 @@ let UserService = class UserService {
             }
         }));
     }
+    setAvatar(id, avatarUrl) {
+        this.userRepository.update(id, { profileImage: avatarUrl });
+        return this.findOne(id);
+    }
 };
 UserService = __decorate([
     (0, common_1.Injectable)(),

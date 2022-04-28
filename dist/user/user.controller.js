@@ -19,9 +19,19 @@ const rxjs_1 = require("rxjs");
 const create_user_dto_1 = require("./dto/create-user.dto");
 const login_user_dto_1 = require("./dto/login-user.dto");
 const jwt_auth_guards_1 = require("../auth/guards/jwt-auth.guards");
+const platform_express_1 = require("@nestjs/platform-express");
+const path_1 = require("path");
+const fs_1 = require("fs");
+const util_1 = require("util");
+const multer_1 = require("multer");
+const readFileAsync = (0, util_1.promisify)(fs_1.readFile);
+const writeFileAsync = (0, util_1.promisify)(fs_1.writeFile);
+const sharp = require("sharp");
 let UserController = class UserController {
     constructor(userService) {
         this.userService = userService;
+        this.SERVER_URL = "http://localhost:3000/";
+        this.sizes = ['50X50', '100X100', '200X200'];
     }
     create(createUserDto) {
         return (0, rxjs_1.from)(this.userService.create(createUserDto));
@@ -40,6 +50,21 @@ let UserController = class UserController {
     }
     findAll(request) {
         return this.userService.findAll();
+    }
+    async uploadFile(id, file) {
+        const [, ext] = file.mimetype.split('/');
+        this.saveImage(ext, file);
+        return this.userService.setAvatar(id, `${this.SERVER_URL}${file.path}`);
+    }
+    saveImage(ext, file) {
+        if (['jpeg', 'png', 'png'].includes(ext)) {
+            this.sizes.forEach((s) => {
+                const [size] = s.split('X');
+                readFileAsync(file.path).then((b) => {
+                    return sharp(b).resize(+size).toFile(`./uploads/profileimages/${s}/${file.filename}`);
+                }).then(console.log).catch(console.error);
+            });
+        }
     }
 };
 __decorate([
@@ -71,6 +96,29 @@ __decorate([
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", rxjs_1.Observable)
 ], UserController.prototype, "findAll", null);
+__decorate([
+    (0, common_1.Post)(':id/upload'),
+    (0, common_1.UseInterceptors)((0, platform_express_1.FileInterceptor)('file', {
+        storage: (0, multer_1.diskStorage)({
+            destination: './uploads/profileimages',
+            filename: (req, file, cb) => {
+                const randomName = Array(32).fill(null).map(() => (Math.round(Math.random() * 16)).toString(16)).join('');
+                return cb(null, `${randomName}${(0, path_1.extname)(file.originalname)}`);
+            }
+        }),
+    })),
+    __param(0, (0, common_1.Param)('id')),
+    __param(1, (0, common_1.UploadedFile)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, Object]),
+    __metadata("design:returntype", Promise)
+], UserController.prototype, "uploadFile", null);
+__decorate([
+    __param(1, (0, common_1.UploadedFile)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, Object]),
+    __metadata("design:returntype", void 0)
+], UserController.prototype, "saveImage", null);
 UserController = __decorate([
     (0, common_1.Controller)('user'),
     __metadata("design:paramtypes", [user_service_1.UserService])

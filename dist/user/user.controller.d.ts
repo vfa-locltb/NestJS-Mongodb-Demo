@@ -5,9 +5,13 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { LoginUserDto } from './dto/login-user.dto';
 export declare class UserController {
     private readonly userService;
+    SERVER_URL: string;
+    private readonly sizes;
     constructor(userService: UserService);
     create(createUserDto: CreateUserDto): Observable<User>;
     findOne(id: any): Observable<User>;
     login(loginUserDto: LoginUserDto): Observable<Object>;
     findAll(request: any): Observable<User[]>;
+    uploadFile(id: any, file: any): Promise<Observable<User>>;
+    private saveImage;
 }

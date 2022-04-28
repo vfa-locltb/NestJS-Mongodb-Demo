@@ -33,6 +33,8 @@
     "bcrypt": "^5.0.1",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.13.2",
+    "disk-storage": "^1.3.2",
+    "fs": "^0.0.1-security",
     "mongoose": "^6.3.0",
     "passport": "^0.5.2",
     "passport-jwt": "^4.0.0",
@@ -40,6 +42,7 @@
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
     "rxjs": "^7.5.5",
+    "sharp": "^0.30.4",
     "typeorm": "^0.2.45"
   },
   "devDependencies": {
