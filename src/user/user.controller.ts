@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, HttpCode, UseGuards, Req, UseInterceptors, UploadedFile } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, HttpCode, UseGuards, Req, UseInterceptors, UploadedFile, Put } from '@nestjs/common';
 import { UserService } from './user.service';
 import { User } from './entities/user.entity';
 import { from, map, Observable } from 'rxjs';
@@ -13,7 +13,8 @@ import { diskStorage } from  'multer';
 const readFileAsync = promisify(readFile);
 const writeFileAsync = promisify(writeFile);
 import * as sharp from 'sharp';
-
+import { DeleteResult } from 'typeorm';
+const maxSize = 1 * 5024 * 5024;
 
 
 
@@ -63,19 +64,37 @@ export class UserController {
       return this.userService.findAll();
     }
 
+    @Put('edit/:id')
+     update(@Param('id') id, @Body() userData: User):Observable<User>{
+         return this.userService.update(id,userData);
+    }
+
+
+    @Delete('delete/:id')
+    async delete(@Param('id')id):Promise<DeleteResult>{
+        return this.userService.delete(id);
+    }
+
 
     @Post(':id/upload')
     @UseInterceptors(FileInterceptor('file',{
+      limits: {
+        fieldSize: 2 * 1024 * 1024,
+      },
+
       storage: diskStorage({
+        
         destination:'./uploads/profileimages',
         filename: (req, file, cb) => {
             const randomName = Array(32).fill(null).map(() => (Math.round(Math.random() * 16)).toString(16)).join('')
             return cb(null, `${randomName}${extname(file.originalname)}`)
         }
       }),
+      
     }))
+    
     async uploadFile(@Param('id') id, @UploadedFile() file){
-      // return of({imagePath: file.path})
+      // return of({imagePath: file.path
       const [, ext] = file.mimetype.split('/');
       this.saveImage(ext, file);
       return this.userService.setAvatar(id,`${this.SERVER_URL}${file.path}`);

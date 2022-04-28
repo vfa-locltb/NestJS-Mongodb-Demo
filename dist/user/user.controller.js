@@ -15,6 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.UserController = void 0;
 const common_1 = require("@nestjs/common");
 const user_service_1 = require("./user.service");
+const user_entity_1 = require("./entities/user.entity");
 const rxjs_1 = require("rxjs");
 const create_user_dto_1 = require("./dto/create-user.dto");
 const login_user_dto_1 = require("./dto/login-user.dto");
@@ -27,6 +28,7 @@ const multer_1 = require("multer");
 const readFileAsync = (0, util_1.promisify)(fs_1.readFile);
 const writeFileAsync = (0, util_1.promisify)(fs_1.writeFile);
 const sharp = require("sharp");
+const maxSize = 1 * 5024 * 5024;
 let UserController = class UserController {
     constructor(userService) {
         this.userService = userService;
@@ -50,6 +52,12 @@ let UserController = class UserController {
     }
     findAll(request) {
         return this.userService.findAll();
+    }
+    update(id, userData) {
+        return this.userService.update(id, userData);
+    }
+    async delete(id) {
+        return this.userService.delete(id);
     }
     async uploadFile(id, file) {
         const [, ext] = file.mimetype.split('/');
@@ -97,8 +105,26 @@ __decorate([
     __metadata("design:returntype", rxjs_1.Observable)
 ], UserController.prototype, "findAll", null);
 __decorate([
+    (0, common_1.Put)('edit/:id'),
+    __param(0, (0, common_1.Param)('id')),
+    __param(1, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, user_entity_1.User]),
+    __metadata("design:returntype", rxjs_1.Observable)
+], UserController.prototype, "update", null);
+__decorate([
+    (0, common_1.Delete)('delete/:id'),
+    __param(0, (0, common_1.Param)('id')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", Promise)
+], UserController.prototype, "delete", null);
+__decorate([
     (0, common_1.Post)(':id/upload'),
     (0, common_1.UseInterceptors)((0, platform_express_1.FileInterceptor)('file', {
+        limits: {
+            fieldSize: 2 * 1024 * 1024,
+        },
         storage: (0, multer_1.diskStorage)({
             destination: './uploads/profileimages',
             filename: (req, file, cb) => {

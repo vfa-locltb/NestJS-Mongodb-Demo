@@ -1,7 +1,7 @@
 import { forwardRef, HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { AuthService } from 'src/auth/auth.service';
-import { Repository } from 'typeorm';
+import { DeleteResult, Repository } from 'typeorm';
 import { User } from './entities/user.entity';
 import { from, map, Observable, switchMap } from 'rxjs';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -72,6 +72,16 @@ findOne(id): Observable<User> {
  findAll(): Observable<User[]>{
    return from(this.userRepository.find());
  }
+
+  update(id: string, user: User): Observable<User> {
+   this.userRepository.update(id, user);
+  return this.findOne(id);
+}
+
+async delete(id): Promise<DeleteResult> {
+  return await this.userRepository.delete(id);
+}
+
 
  private findUserByEmail(email: string): Observable<User>{
    return from(this.userRepository.findOne({email},{select: ['id','name','email','password']}));

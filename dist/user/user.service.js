@@ -75,6 +75,13 @@ let UserService = class UserService {
     findAll() {
         return (0, rxjs_1.from)(this.userRepository.find());
     }
+    update(id, user) {
+        this.userRepository.update(id, user);
+        return this.findOne(id);
+    }
+    async delete(id) {
+        return await this.userRepository.delete(id);
+    }
     findUserByEmail(email) {
         return (0, rxjs_1.from)(this.userRepository.findOne({ email }, { select: ['id', 'name', 'email', 'password'] }));
     }
