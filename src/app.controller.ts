@@ -1,31 +1,31 @@
-import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
-import { AppService } from './app.service';
-import { User } from './user.models';
-import { UserUpdateDto } from './userUpdate.dto';
+// import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
+// import { AppService } from './app.service';
+// import { User } from './user.models';
+// import { UserUpdateDto } from './userUpdate.dto';
 
-@Controller('user')
-export class AppController {
-  constructor(private readonly appService: AppService) {}
+// @Controller('user')
+// export class AppController {
+//   constructor(private readonly appService: AppService) {}
 
-  @Post('/create')
-  async createUser(@Body() userDto: User):Promise<User>{
-    return await this.appService.create(userDto)
-  }
+//   @Post('/create')
+//   async createUser(@Body() userDto: User):Promise<User>{
+//     return await this.appService.create(userDto)
+//   }
   
-  @Get()
-  readUser(){
-    return this.appService.readUser()
-  }
+//   @Get()
+//   readUser(){
+//     return this.appService.readUser()
+//   }
 
-  @Put(':id')
-  async updateUser(@Param('id') id: string, @Body() updateData: UserUpdateDto): Promise<User>
-  {
-    return this.appService.updateUser(id,updateData)
-  }
+//   @Put(':id')
+//   async updateUser(@Param('id') id: string, @Body() updateData: UserUpdateDto): Promise<User>
+//   {
+//     return this.appService.updateUser(id,updateData)
+//   }
 
-  @Delete(':id')
-  async deleteUser(@Param('id') id: string)
-  {
-    return this.appService.deleteUser(id)
-  }
-}
+//   @Delete(':id')
+//   async deleteUser(@Param('id') id: string)
+//   {
+//     return this.appService.deleteUser(id)
+//   }
+// }

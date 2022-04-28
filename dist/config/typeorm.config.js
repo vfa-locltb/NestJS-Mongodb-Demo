@@ -10,7 +10,7 @@ exports.typeOrmAsyncConfig = {
             type: 'mongodb',
             host: process.env.DB_HOST,
             port: parseInt(process.env.DB_PORT, 10),
-            database: process.env.DB_NAME,
+            database: 'nestjs-mongodb-demo',
             entities: [__dirname + '/../**/*.entity.{js,ts}'],
             extra: {
                 charset: 'utf8mb4_unicode_ci',
@@ -23,7 +23,7 @@ exports.typeOrmAsyncConfig = {
 exports.typeOrmConfig = {
     type: 'mongodb',
     host: process.env.DB_HOST,
-    port: parseInt(process.env.DB_PORT),
+    port: parseInt(process.env.DB_PORT, 10),
     database: process.env.DB_NAME,
     entities: [__dirname + '/../**/*.entity.{js,ts}'],
     extra: {

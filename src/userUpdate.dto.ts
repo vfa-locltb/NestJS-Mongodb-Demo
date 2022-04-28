@@ -1,3 +1,3 @@
-export class UserUpdateDto{
-    description: string;
-}
+// export class UserUpdateDto{
+//     description: string;
+// }
