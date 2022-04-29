@@ -7,4 +7,5 @@ export declare class AuthService {
     generateJwt(user: User): Observable<string>;
     hashPassword(password: string): Observable<string>;
     comparePasswords(password: string, storedPasswordHash: string): Observable<any>;
+    verifyJwt(jwt: string): Observable<any>;
 }

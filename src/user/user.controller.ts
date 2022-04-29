@@ -16,8 +16,7 @@ import * as sharp from 'sharp';
 import { DeleteResult } from 'typeorm';
 import { hasRoles } from 'src/auth/decorator/roles.decorator';
 import { RolesGuard } from 'src/auth/guards/roles.guards';
-const maxSize = 1 * 5024 * 5024;
-
+const maxSize = 1 * 1024 * 1024;
 
 
 
@@ -35,8 +34,8 @@ export class UserController {
      return from(this.userService.create(createUserDto));
   }
 
-  @Get(':id')
-  findOne(id): Observable<User> {
+  @Get('user/:id')
+  findOne(@Param('id') id): Observable<User> {
     return from(this.userService.findOne(id));
   } 
   // @Get()
@@ -71,6 +70,9 @@ export class UserController {
      update(@Param('id') id, @Body() userData: User):Observable<User>{
          return this.userService.update(id,userData);
     }
+
+    @hasRoles(UserRole.Admin)
+    @UseGuards(JwtAuthGuard, RolesGuard)
     @Put('edit/:id/role')
     updateRole(@Param('id') id, @Body() user: User) : Observable<User> {
       return from(this.userService.updateRole(id,user));
@@ -86,15 +88,16 @@ export class UserController {
     @Post(':id/upload')
     @UseInterceptors(FileInterceptor('file',{
       storage: diskStorage({
-        
         destination:'./uploads/profileimages',
         filename: (req, file, cb) => {
             const randomName = Array(32).fill(null).map(() => (Math.round(Math.random() * 16)).toString(16)).join('')
             return cb(null, `${randomName}${extname(file.originalname)}`)
         }
       }),
+      limits: { fileSize: maxSize }
       
     }))
+    
     
     async uploadFile(@Param('id') id, @UploadedFile() file){
       // return of({imagePath: file.path

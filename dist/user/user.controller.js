@@ -30,7 +30,7 @@ const writeFileAsync = (0, util_1.promisify)(fs_1.writeFile);
 const sharp = require("sharp");
 const roles_decorator_1 = require("../auth/decorator/roles.decorator");
 const roles_guards_1 = require("../auth/guards/roles.guards");
-const maxSize = 1 * 5024 * 5024;
+const maxSize = 1 * 1024 * 1024;
 let UserController = class UserController {
     constructor(userService) {
         this.userService = userService;
@@ -88,7 +88,8 @@ __decorate([
     __metadata("design:returntype", rxjs_1.Observable)
 ], UserController.prototype, "create", null);
 __decorate([
-    (0, common_1.Get)(':id'),
+    (0, common_1.Get)('user/:id'),
+    __param(0, (0, common_1.Param)('id')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", rxjs_1.Observable)
@@ -119,6 +120,8 @@ __decorate([
     __metadata("design:returntype", rxjs_1.Observable)
 ], UserController.prototype, "update", null);
 __decorate([
+    (0, roles_decorator_1.hasRoles)(user_entity_1.UserRole.Admin),
+    (0, common_1.UseGuards)(jwt_guards_1.JwtAuthGuard, roles_guards_1.RolesGuard),
     (0, common_1.Put)('edit/:id/role'),
     __param(0, (0, common_1.Param)('id')),
     __param(1, (0, common_1.Body)()),
@@ -143,6 +146,7 @@ __decorate([
                 return cb(null, `${randomName}${(0, path_1.extname)(file.originalname)}`);
             }
         }),
+        limits: { fileSize: maxSize }
     })),
     __param(0, (0, common_1.Param)('id')),
     __param(1, (0, common_1.UploadedFile)()),

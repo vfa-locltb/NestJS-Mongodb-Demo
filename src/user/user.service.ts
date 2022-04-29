@@ -64,10 +64,9 @@ login(loginUserDto: LoginUserDto): Observable<string> {
 }
 
 
-findOne(id): Observable<User> {
+findOne(id: any): Observable<User> {
   return from(this.userRepository.findOne(id));
 }
-
 
  findAll(): Observable<User[]>{
    return from(this.userRepository.find());

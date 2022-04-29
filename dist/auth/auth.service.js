@@ -27,6 +27,9 @@ let AuthService = class AuthService {
     comparePasswords(password, storedPasswordHash) {
         return (0, rxjs_1.from)(bcrypt.compare(password, storedPasswordHash));
     }
+    verifyJwt(jwt) {
+        return (0, rxjs_1.from)(this.jwtService.verifyAsync(jwt));
+    }
 };
 AuthService = __decorate([
     (0, common_1.Injectable)(),
