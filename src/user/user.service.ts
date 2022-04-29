@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { AuthService } from 'src/auth/auth.service';
 import { DeleteResult, Repository } from 'typeorm';
 import { User } from './entities/user.entity';
-import { from, map, Observable, switchMap } from 'rxjs';
+import { from, map, Observable, raceWith, switchMap } from 'rxjs';
 import { CreateUserDto } from './dto/create-user.dto';
 import { LoginUserDto } from './dto/login-user.dto';
 
@@ -65,7 +65,7 @@ login(loginUserDto: LoginUserDto): Observable<string> {
 
 
 findOne(id): Observable<User> {
-  return from(this.userRepository.findOne({ id }));
+  return from(this.userRepository.findOne(id));
 }
 
 
@@ -77,9 +77,13 @@ findOne(id): Observable<User> {
    this.userRepository.update(id, user);
   return this.findOne(id);
 }
+  updateRole(id: string, user: User): Observable<any> {
+    this.userRepository.update(id,user);
+    return this.findOne(id);
+  }
 
-async delete(id): Promise<DeleteResult> {
-  return await this.userRepository.delete(id);
+delete(id): Promise<DeleteResult> {
+  return this.userRepository.delete(id);
 }
 
 

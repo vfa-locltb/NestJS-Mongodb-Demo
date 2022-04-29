@@ -1,10 +1,10 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, HttpCode, UseGuards, Req, UseInterceptors, UploadedFile, Put } from '@nestjs/common';
 import { UserService } from './user.service';
-import { User } from './entities/user.entity';
+import { User, UserRole } from './entities/user.entity';
 import { from, map, Observable } from 'rxjs';
 import { CreateUserDto } from './dto/create-user.dto'
 import { LoginUserDto } from './dto/login-user.dto';
-import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guards';
+import { JwtAuthGuard } from 'src/auth/guards/jwt.guards';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { extname } from 'path';
 import { readFile, writeFile } from 'fs';
@@ -14,6 +14,8 @@ const readFileAsync = promisify(readFile);
 const writeFileAsync = promisify(writeFile);
 import * as sharp from 'sharp';
 import { DeleteResult } from 'typeorm';
+import { hasRoles } from 'src/auth/decorator/roles.decorator';
+import { RolesGuard } from 'src/auth/guards/roles.guards';
 const maxSize = 1 * 5024 * 5024;
 
 
@@ -58,7 +60,8 @@ export class UserController {
 
 
     // Requires Valid JWT from Login Request
-    @UseGuards(JwtAuthGuard)
+    @hasRoles(UserRole.Admin)
+    @UseGuards(JwtAuthGuard, RolesGuard)
     @Get()
     findAll(@Req() request): Observable<User[]> {
       return this.userService.findAll();
@@ -68,20 +71,20 @@ export class UserController {
      update(@Param('id') id, @Body() userData: User):Observable<User>{
          return this.userService.update(id,userData);
     }
+    @Put('edit/:id/role')
+    updateRole(@Param('id') id, @Body() user: User) : Observable<User> {
+      return from(this.userService.updateRole(id,user));
+    }
 
 
     @Delete('delete/:id')
     async delete(@Param('id')id):Promise<DeleteResult>{
-        return this.userService.delete(id);
+        return await this.userService.delete(id);
     }
 
 
     @Post(':id/upload')
     @UseInterceptors(FileInterceptor('file',{
-      limits: {
-        fieldSize: 2 * 1024 * 1024,
-      },
-
       storage: diskStorage({
         
         destination:'./uploads/profileimages',

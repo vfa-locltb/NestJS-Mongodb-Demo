@@ -13,6 +13,7 @@ export declare class UserService {
     findOne(id: any): Observable<User>;
     findAll(): Observable<User[]>;
     update(id: string, user: User): Observable<User>;
+    updateRole(id: string, user: User): Observable<any>;
     delete(id: any): Promise<DeleteResult>;
     private findUserByEmail;
     private validatePassword;

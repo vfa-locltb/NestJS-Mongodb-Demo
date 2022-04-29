@@ -16,7 +16,6 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
             TypeOrmModule.forRootAsync(typeOrmAsyncConfig),
             // MongooseModule.forRoot('mongodb+srv://chuongnvt:chuongnvt@cluster0.uosty.mongodb.net/nestjs-auth-jwt?retryWrites=true&w=majority'),
             // MongooseModule.forFeature([{name:'user',schema: UserSchema}]),
-            AuthModule,
             UserModule,
 ],
   // controllers: [AppController],

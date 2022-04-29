@@ -1,5 +1,10 @@
 import { BeforeInsert, Column, Entity, ObjectID, ObjectIdColumn } from "typeorm";
 
+export enum UserRole{
+    Admin = "admin",
+    Editor = "editor",
+    User = "user",
+}
 @Entity()
 export class User {
     @ObjectIdColumn()
@@ -10,6 +15,9 @@ export class User {
 
     @Column({unique: true})
     email: string;
+
+    @Column({type: 'enum', enum: UserRole, default: UserRole.User})
+    role: UserRole;
 
     @Column()
     profileImage: string;

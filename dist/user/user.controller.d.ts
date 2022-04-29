@@ -14,6 +14,7 @@ export declare class UserController {
     login(loginUserDto: LoginUserDto): Observable<Object>;
     findAll(request: any): Observable<User[]>;
     update(id: any, userData: User): Observable<User>;
+    updateRole(id: any, user: User): Observable<User>;
     delete(id: any): Promise<DeleteResult>;
     uploadFile(id: any, file: any): Promise<Observable<User>>;
     private saveImage;

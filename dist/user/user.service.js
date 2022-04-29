@@ -70,7 +70,7 @@ let UserService = class UserService {
         }));
     }
     findOne(id) {
-        return (0, rxjs_1.from)(this.userRepository.findOne({ id }));
+        return (0, rxjs_1.from)(this.userRepository.findOne(id));
     }
     findAll() {
         return (0, rxjs_1.from)(this.userRepository.find());
@@ -79,8 +79,12 @@ let UserService = class UserService {
         this.userRepository.update(id, user);
         return this.findOne(id);
     }
-    async delete(id) {
-        return await this.userRepository.delete(id);
+    updateRole(id, user) {
+        this.userRepository.update(id, user);
+        return this.findOne(id);
+    }
+    delete(id) {
+        return this.userRepository.delete(id);
     }
     findUserByEmail(email) {
         return (0, rxjs_1.from)(this.userRepository.findOne({ email }, { select: ['id', 'name', 'email', 'password'] }));

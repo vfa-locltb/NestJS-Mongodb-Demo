@@ -20,7 +20,8 @@ UserModule = __decorate([
         imports: [typeorm_1.TypeOrmModule.forFeature([user_entity_1.User]), auth_module_1.AuthModule,
         ],
         controllers: [user_controller_1.UserController],
-        providers: [user_service_1.UserService]
+        providers: [user_service_1.UserService],
+        exports: [user_service_1.UserService]
     })
 ], UserModule);
 exports.UserModule = UserModule;

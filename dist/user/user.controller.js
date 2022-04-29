@@ -19,7 +19,7 @@ const user_entity_1 = require("./entities/user.entity");
 const rxjs_1 = require("rxjs");
 const create_user_dto_1 = require("./dto/create-user.dto");
 const login_user_dto_1 = require("./dto/login-user.dto");
-const jwt_auth_guards_1 = require("../auth/guards/jwt-auth.guards");
+const jwt_guards_1 = require("../auth/guards/jwt.guards");
 const platform_express_1 = require("@nestjs/platform-express");
 const path_1 = require("path");
 const fs_1 = require("fs");
@@ -28,6 +28,8 @@ const multer_1 = require("multer");
 const readFileAsync = (0, util_1.promisify)(fs_1.readFile);
 const writeFileAsync = (0, util_1.promisify)(fs_1.writeFile);
 const sharp = require("sharp");
+const roles_decorator_1 = require("../auth/decorator/roles.decorator");
+const roles_guards_1 = require("../auth/guards/roles.guards");
 const maxSize = 1 * 5024 * 5024;
 let UserController = class UserController {
     constructor(userService) {
@@ -56,8 +58,11 @@ let UserController = class UserController {
     update(id, userData) {
         return this.userService.update(id, userData);
     }
+    updateRole(id, user) {
+        return (0, rxjs_1.from)(this.userService.updateRole(id, user));
+    }
     async delete(id) {
-        return this.userService.delete(id);
+        return await this.userService.delete(id);
     }
     async uploadFile(id, file) {
         const [, ext] = file.mimetype.split('/');
@@ -97,7 +102,8 @@ __decorate([
     __metadata("design:returntype", rxjs_1.Observable)
 ], UserController.prototype, "login", null);
 __decorate([
-    (0, common_1.UseGuards)(jwt_auth_guards_1.JwtAuthGuard),
+    (0, roles_decorator_1.hasRoles)(user_entity_1.UserRole.Admin),
+    (0, common_1.UseGuards)(jwt_guards_1.JwtAuthGuard, roles_guards_1.RolesGuard),
     (0, common_1.Get)(),
     __param(0, (0, common_1.Req)()),
     __metadata("design:type", Function),
@@ -113,6 +119,14 @@ __decorate([
     __metadata("design:returntype", rxjs_1.Observable)
 ], UserController.prototype, "update", null);
 __decorate([
+    (0, common_1.Put)('edit/:id/role'),
+    __param(0, (0, common_1.Param)('id')),
+    __param(1, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, user_entity_1.User]),
+    __metadata("design:returntype", rxjs_1.Observable)
+], UserController.prototype, "updateRole", null);
+__decorate([
     (0, common_1.Delete)('delete/:id'),
     __param(0, (0, common_1.Param)('id')),
     __metadata("design:type", Function),
@@ -122,9 +136,6 @@ __decorate([
 __decorate([
     (0, common_1.Post)(':id/upload'),
     (0, common_1.UseInterceptors)((0, platform_express_1.FileInterceptor)('file', {
-        limits: {
-            fieldSize: 2 * 1024 * 1024,
-        },
         storage: (0, multer_1.diskStorage)({
             destination: './uploads/profileimages',
             filename: (req, file, cb) => {
