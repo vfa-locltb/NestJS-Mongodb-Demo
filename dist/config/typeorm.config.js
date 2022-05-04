@@ -8,9 +8,7 @@ exports.typeOrmAsyncConfig = {
     useFactory: async () => {
         return {
             type: 'mongodb',
-            host: process.env.DB_HOST,
-            port: parseInt(process.env.DB_PORT, 10),
-            database: 'nestjs-mongodb-demo',
+            url: 'mongodb+srv://chuongnvt:chuongnvt@cluster0.uosty.mongodb.net/nestjs-mongodb-demo?retryWrites=true&w=majority',
             entities: [__dirname + '/../**/*.entity.{js,ts}'],
             extra: {
                 charset: 'utf8mb4_unicode_ci',
@@ -22,9 +20,7 @@ exports.typeOrmAsyncConfig = {
 };
 exports.typeOrmConfig = {
     type: 'mongodb',
-    host: process.env.DB_HOST,
-    port: parseInt(process.env.DB_PORT, 10),
-    database: process.env.DB_NAME,
+    url: 'mongodb+srv://chuongnvt:chuongnvt@cluster0.uosty.mongodb.net/nestjs-mongodb-demo?retryWrites=true&w=majority',
     entities: [__dirname + '/../**/*.entity.{js,ts}'],
     extra: {
         charset: 'utf8mb4_unicode_ci',

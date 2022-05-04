@@ -51,7 +51,7 @@ login(loginUserDto: LoginUserDto): Observable<string> {
                 switchMap((user: User) => this.authService.generateJwt(user))
               )
             } else {
-              throw new HttpException('Login was not Successfulll', HttpStatus.UNAUTHORIZED);
+              throw new HttpException('Login was not Successfull', HttpStatus.UNAUTHORIZED);
             }
           })
         )

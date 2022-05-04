@@ -16,7 +16,7 @@ import * as sharp from 'sharp';
 import { DeleteResult } from 'typeorm';
 import { hasRoles } from 'src/auth/decorator/roles.decorator';
 import { RolesGuard } from 'src/auth/guards/roles.guards';
-const maxSize = 1 * 1024 * 1024;
+const maxSize = 10 * 1024 * 1024;
 
 
 
@@ -112,7 +112,7 @@ export class UserController {
           const [size] = s.split('X');
           readFileAsync(file.path).then((b: Buffer)=>{
             return sharp(b).resize(+size).toFile(`./uploads/profileimages/${s}/${file.filename}`);
-          }).then(console.log).catch(console.error);
+          })
         });
       }
   }

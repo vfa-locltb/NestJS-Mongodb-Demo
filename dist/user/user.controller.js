@@ -30,7 +30,7 @@ const writeFileAsync = (0, util_1.promisify)(fs_1.writeFile);
 const sharp = require("sharp");
 const roles_decorator_1 = require("../auth/decorator/roles.decorator");
 const roles_guards_1 = require("../auth/guards/roles.guards");
-const maxSize = 1 * 1024 * 1024;
+const maxSize = 10 * 1024 * 1024;
 let UserController = class UserController {
     constructor(userService) {
         this.userService = userService;
@@ -75,7 +75,7 @@ let UserController = class UserController {
                 const [size] = s.split('X');
                 readFileAsync(file.path).then((b) => {
                     return sharp(b).resize(+size).toFile(`./uploads/profileimages/${s}/${file.filename}`);
-                }).then(console.log).catch(console.error);
+                });
             });
         }
     }

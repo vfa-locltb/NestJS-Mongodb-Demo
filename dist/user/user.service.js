@@ -60,7 +60,7 @@ let UserService = class UserService {
                         return this.findOne(user.id).pipe((0, rxjs_1.switchMap)((user) => this.authService.generateJwt(user)));
                     }
                     else {
-                        throw new common_1.HttpException('Login was not Successfulll', common_1.HttpStatus.UNAUTHORIZED);
+                        throw new common_1.HttpException('Login was not Successfull', common_1.HttpStatus.UNAUTHORIZED);
                     }
                 }));
             }

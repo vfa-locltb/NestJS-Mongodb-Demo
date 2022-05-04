@@ -1,7 +1,7 @@
-version: "3"
+version: "3.9"
 services:
   nodeapp:
-    container_name: node_pdf
+    container_name: nestjs-mongodb-demo
     restart: always
     build:
       context: .
@@ -18,22 +18,24 @@ services:
       - node-webapp-network
   mongodb:
     container_name: mongodb
-    image: mongo:4.4.6
+    image: mongo:latest
     volumes:
-      - ~/mongo:/data/db
+      - './mongo:/data/db'
     ports:
       - "27017:27017"
     environment:
-      - MONGO_INITDB_ROOT_USERNAME=chuongnvt
-      - MONGO_INITDB_ROOT_PASSWORD=chuongnvt
-      - MONGO_INITDB_DATABASE=nestjs-auth-jwt
+      # - MONGO_INITDB_ROOT_USERNAME=chuongnvt
+      # - MONGO_INITDB_ROOT_PASSWORD=chuongnvt
+      # - MONGO_INITDB_DATABASE=nestjs-mongodb-demo
+      - MONGO_URL=mongodb+srv://chuongnvt:chuongnvt@cluster0.uosty.mongodb.net/nestjs-mongodb-demo?retryWrites=true&w=majority
     networks:
       - node-webapp-network
 networks:
   node-webapp-network:
     driver: bridge
 
-    # docker compose up --build
-    # npm i --save @nestjs/mongoose mongoose
-    # npm i --save @nestjs/typeorm typeorm
-    # npm run start:dev
+#     # docker compose up --build
+#     # npm i --save @nestjs/mongoose mongoose
+#     # npm i --save @nestjs/typeorm typeorm
+#     # npm run start:dev
+  
