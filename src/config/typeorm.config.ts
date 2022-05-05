@@ -11,11 +11,11 @@ export const typeOrmAsyncConfig: TypeOrmModuleAsyncOptions = {
     return {
       type: 'mongodb',
       url: 'mongodb+srv://chuongnvt:chuongnvt@cluster0.uosty.mongodb.net/nestjs-mongodb-demo?retryWrites=true&w=majority',
-      // host: process.env.TYPEORM_HOST,
-      // port: parseInt(process.env.TYPEORM_PORT, 10),
-      // username: process.env.TYPEORM_USERNAME,
+      // host: process.env.DB_HOST,
+      // port: parseInt(process.env.DB_PORT, 10),
+      // username: process.env.DB_USERNAME,
       // database: 'nestjs-mongodb-demo',
-      // password: process.env.TYPEORM_PASSWORD,
+      // password: process.env.DB_PASSWORD,
       entities: [__dirname + '/../**/*.entity.{js,ts}'],
     //   migrations: [__dirname + '/../migrations/*{.ts,.js}'],
     //   cli: {
@@ -33,11 +33,11 @@ export const typeOrmAsyncConfig: TypeOrmModuleAsyncOptions = {
 export const typeOrmConfig: TypeOrmModuleOptions = {
   type: 'mongodb',
   url: 'mongodb+srv://chuongnvt:chuongnvt@cluster0.uosty.mongodb.net/nestjs-mongodb-demo?retryWrites=true&w=majority',
-      // host: process.env.TYPEORM_HOST,
-      // port: parseInt(process.env.TYPEORM_PORT, 10),
-      // username: process.env.TYPEORM_USERNAME,
+      // host: process.env.DB_HOST,
+      // port: parseInt(process.env.DB_PORT, 10),
+      // username: process.env.DB_USERNAME,
       // database: 'nestjs-mongodb-demo',
-      // password: process.env.TYPEORM_PASSWORD,
+      // password: process.env.DB_PASSWORD,
       entities: [__dirname + '/../**/*.entity.{js,ts}'],
 //   migrations: [__dirname + '/../migrations/*{.ts,.js}'],
 //   cli: {

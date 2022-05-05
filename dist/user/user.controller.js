@@ -75,7 +75,7 @@ let UserController = class UserController {
                 const [size] = s.split('X');
                 readFileAsync(file.path).then((b) => {
                     return sharp(b).resize(+size).toFile(`./uploads/profileimages/${s}/${file.filename}`);
-                });
+                }).then(console.log).catch(console.error);
             });
         }
     }
