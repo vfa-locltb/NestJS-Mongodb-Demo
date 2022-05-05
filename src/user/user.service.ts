@@ -84,7 +84,6 @@ findOne(id: any): Observable<User> {
 }
 
 
-
   update(id: string, user: User): Observable<User> {
    this.userRepository.update(id, user);
   return this.findOne(id);
