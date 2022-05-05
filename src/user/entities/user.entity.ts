@@ -1,3 +1,4 @@
+import { ApiProperty } from "@nestjs/swagger";
 import { BeforeInsert, Column, Entity, ObjectID, ObjectIdColumn } from "typeorm";
 
 export enum UserRole{
@@ -11,18 +12,23 @@ export class User {
     id: ObjectID;
 
     @Column()
+    @ApiProperty()
     name: string;
 
     @Column({unique: true})
+    @ApiProperty()
     email: string;
 
     @Column({type: 'enum', enum: UserRole, default: UserRole.User})
+    @ApiProperty()
     role: UserRole;
 
     @Column()
+    @ApiProperty()
     profileImage: string;
 
     @Column({select: false})
+    @ApiProperty()
     password: string;
 
     @BeforeInsert()

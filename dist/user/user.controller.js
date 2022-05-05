@@ -30,6 +30,7 @@ const writeFileAsync = (0, util_1.promisify)(fs_1.writeFile);
 const sharp = require("sharp");
 const roles_decorator_1 = require("../auth/decorator/roles.decorator");
 const roles_guards_1 = require("../auth/guards/roles.guards");
+const swagger_1 = require("@nestjs/swagger");
 const maxSize = 10 * 1024 * 1024;
 let UserController = class UserController {
     constructor(userService) {
@@ -91,7 +92,7 @@ __decorate([
     (0, common_1.Get)('user/:id'),
     __param(0, (0, common_1.Param)('id')),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object]),
+    __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", rxjs_1.Observable)
 ], UserController.prototype, "findOne", null);
 __decorate([
@@ -116,7 +117,7 @@ __decorate([
     __param(0, (0, common_1.Param)('id')),
     __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object, user_entity_1.User]),
+    __metadata("design:paramtypes", [String, user_entity_1.User]),
     __metadata("design:returntype", rxjs_1.Observable)
 ], UserController.prototype, "update", null);
 __decorate([
@@ -126,14 +127,14 @@ __decorate([
     __param(0, (0, common_1.Param)('id')),
     __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object, user_entity_1.User]),
+    __metadata("design:paramtypes", [String, user_entity_1.User]),
     __metadata("design:returntype", rxjs_1.Observable)
 ], UserController.prototype, "updateRole", null);
 __decorate([
     (0, common_1.Delete)('delete/:id'),
     __param(0, (0, common_1.Param)('id')),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object]),
+    __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "delete", null);
 __decorate([
@@ -151,7 +152,7 @@ __decorate([
     __param(0, (0, common_1.Param)('id')),
     __param(1, (0, common_1.UploadedFile)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object, Object]),
+    __metadata("design:paramtypes", [String, Object]),
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "uploadFile", null);
 __decorate([
@@ -162,6 +163,7 @@ __decorate([
 ], UserController.prototype, "saveImage", null);
 UserController = __decorate([
     (0, common_1.Controller)('user'),
+    (0, swagger_1.ApiTags)('todos'),
     __metadata("design:paramtypes", [user_service_1.UserService])
 ], UserController);
 exports.UserController = UserController;

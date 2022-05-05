@@ -10,6 +10,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.User = exports.UserRole = void 0;
+const swagger_1 = require("@nestjs/swagger");
 const typeorm_1 = require("typeorm");
 var UserRole;
 (function (UserRole) {
@@ -28,22 +29,27 @@ __decorate([
 ], User.prototype, "id", void 0);
 __decorate([
     (0, typeorm_1.Column)(),
+    (0, swagger_1.ApiProperty)(),
     __metadata("design:type", String)
 ], User.prototype, "name", void 0);
 __decorate([
     (0, typeorm_1.Column)({ unique: true }),
+    (0, swagger_1.ApiProperty)(),
     __metadata("design:type", String)
 ], User.prototype, "email", void 0);
 __decorate([
     (0, typeorm_1.Column)({ type: 'enum', enum: UserRole, default: UserRole.User }),
+    (0, swagger_1.ApiProperty)(),
     __metadata("design:type", String)
 ], User.prototype, "role", void 0);
 __decorate([
     (0, typeorm_1.Column)(),
+    (0, swagger_1.ApiProperty)(),
     __metadata("design:type", String)
 ], User.prototype, "profileImage", void 0);
 __decorate([
     (0, typeorm_1.Column)({ select: false }),
+    (0, swagger_1.ApiProperty)(),
     __metadata("design:type", String)
 ], User.prototype, "password", void 0);
 __decorate([

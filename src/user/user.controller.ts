@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, HttpCode, UseGuards, Req, UseInterceptors, UploadedFile, Put } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Delete, HttpCode, UseGuards, Req, UseInterceptors, UploadedFile, Put } from '@nestjs/common';
 import { UserService } from './user.service';
 import { User, UserRole } from './entities/user.entity';
 import { from, map, Observable } from 'rxjs';
@@ -16,11 +16,13 @@ import * as sharp from 'sharp';
 import { DeleteResult } from 'typeorm';
 import { hasRoles } from 'src/auth/decorator/roles.decorator';
 import { RolesGuard } from 'src/auth/guards/roles.guards';
+import { ApiTags } from '@nestjs/swagger';
 const maxSize = 10 * 1024 * 1024;
 
 
 
 @Controller('user')
+@ApiTags('todos')
 export class UserController {
   SERVER_URL:  string  =  "http://localhost:3000/";
   private readonly sizes: string [];
@@ -35,7 +37,7 @@ export class UserController {
   }
 
   @Get('user/:id')
-  findOne(@Param('id') id): Observable<User> {
+  findOne(@Param('id') id: string): Observable<User> {
     return from(this.userService.findOne(id));
   } 
   // @Get()
@@ -67,20 +69,20 @@ export class UserController {
     }
 
     @Put('edit/:id')
-     update(@Param('id') id, @Body() userData: User):Observable<User>{
+     update(@Param('id') id: string, @Body() userData: User):Observable<User>{
          return this.userService.update(id,userData);
     }
 
     @hasRoles(UserRole.Admin)
     @UseGuards(JwtAuthGuard, RolesGuard)
     @Put('edit/:id/role')
-    updateRole(@Param('id') id, @Body() user: User) : Observable<User> {
+    updateRole(@Param('id') id: string, @Body() user: User) : Observable<User> {
       return from(this.userService.updateRole(id,user));
     }
 
 
     @Delete('delete/:id')
-    async delete(@Param('id')id):Promise<DeleteResult>{
+    async delete(@Param('id')id: string):Promise<DeleteResult>{
         return await this.userService.delete(id);
     }
 
@@ -99,7 +101,7 @@ export class UserController {
     }))
     
     
-    async uploadFile(@Param('id') id, @UploadedFile() file){
+    async uploadFile(@Param('id') id:string, @UploadedFile() file){
       // return of({imagePath: file.path
       const [, ext] = file.mimetype.split('/');
       this.saveImage(ext, file);

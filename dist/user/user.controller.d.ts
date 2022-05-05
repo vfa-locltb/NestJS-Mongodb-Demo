@@ -10,12 +10,12 @@ export declare class UserController {
     private readonly sizes;
     constructor(userService: UserService);
     create(createUserDto: CreateUserDto): Observable<User>;
-    findOne(id: any): Observable<User>;
+    findOne(id: string): Observable<User>;
     login(loginUserDto: LoginUserDto): Observable<Object>;
     findAll(request: any): Observable<User[]>;
-    update(id: any, userData: User): Observable<User>;
-    updateRole(id: any, user: User): Observable<User>;
-    delete(id: any): Promise<DeleteResult>;
-    uploadFile(id: any, file: any): Promise<Observable<User>>;
+    update(id: string, userData: User): Observable<User>;
+    updateRole(id: string, user: User): Observable<User>;
+    delete(id: string): Promise<DeleteResult>;
+    uploadFile(id: string, file: any): Promise<Observable<User>>;
     private saveImage;
 }
