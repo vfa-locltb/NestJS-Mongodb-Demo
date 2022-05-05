@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { CreateUserDto } from './dto/create-user.dto';
 import { LoginUserDto } from './dto/login-user.dto';
 import { DeleteResult } from 'typeorm';
+import { Pagination } from 'nestjs-typeorm-paginate';
 export declare class UserController {
     private readonly userService;
     SERVER_URL: string;
@@ -12,7 +13,7 @@ export declare class UserController {
     create(createUserDto: CreateUserDto): Observable<User>;
     findOne(id: string): Observable<User>;
     login(loginUserDto: LoginUserDto): Observable<Object>;
-    findAll(request: any): Observable<User[]>;
+    findAll(page: number, limit: number, username: string, request: any): Observable<Pagination<User>>;
     update(id: string, userData: User): Observable<User>;
     updateRole(id: string, user: User): Observable<User>;
     delete(id: string): Promise<DeleteResult>;

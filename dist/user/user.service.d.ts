@@ -4,6 +4,7 @@ import { User } from './entities/user.entity';
 import { Observable } from 'rxjs';
 import { CreateUserDto } from './dto/create-user.dto';
 import { LoginUserDto } from './dto/login-user.dto';
+import { Pagination, IPaginationOptions } from 'nestjs-typeorm-paginate';
 export declare class UserService {
     private readonly userRepository;
     private readonly authService;
@@ -12,6 +13,7 @@ export declare class UserService {
     login(loginUserDto: LoginUserDto): Observable<string>;
     findOne(id: any): Observable<User>;
     findAll(): Observable<User[]>;
+    paginate(options: IPaginationOptions): Observable<Pagination<User>>;
     update(id: string, user: User): Observable<User>;
     updateRole(id: string, user: User): Observable<any>;
     delete(id: any): Promise<DeleteResult>;

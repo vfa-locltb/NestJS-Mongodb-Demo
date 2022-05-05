@@ -30,6 +30,7 @@ const auth_service_1 = require("../auth/auth.service");
 const typeorm_2 = require("typeorm");
 const user_entity_1 = require("./entities/user.entity");
 const rxjs_1 = require("rxjs");
+const nestjs_typeorm_paginate_1 = require("nestjs-typeorm-paginate");
 let UserService = class UserService {
     constructor(userRepository, authService) {
         this.userRepository = userRepository;
@@ -74,6 +75,12 @@ let UserService = class UserService {
     }
     findAll() {
         return (0, rxjs_1.from)(this.userRepository.find());
+    }
+    paginate(options) {
+        return (0, rxjs_1.from)((0, nestjs_typeorm_paginate_1.paginate)(this.userRepository, options)).pipe((0, rxjs_1.map)((usersPageable) => {
+            usersPageable.items.forEach(function (v) { delete v.password; });
+            return usersPageable;
+        }));
     }
     update(id, user) {
         this.userRepository.update(id, user);

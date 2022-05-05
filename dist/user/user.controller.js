@@ -53,8 +53,9 @@ let UserController = class UserController {
             };
         }));
     }
-    findAll(request) {
-        return this.userService.findAll();
+    findAll(page = 1, limit = 10, username, request) {
+        limit = limit > 100 ? 100 : limit;
+        return this.userService.paginate({ page: Number(page), limit: Number(limit), route: 'http://localhost:3000/api/user' });
     }
     update(id, userData) {
         return this.userService.update(id, userData);
@@ -106,10 +107,13 @@ __decorate([
 __decorate([
     (0, roles_decorator_1.hasRoles)(user_entity_1.UserRole.Admin),
     (0, common_1.UseGuards)(jwt_guards_1.JwtAuthGuard, roles_guards_1.RolesGuard),
-    (0, common_1.Get)(),
-    __param(0, (0, common_1.Req)()),
+    (0, common_1.Get)('user'),
+    __param(0, (0, common_1.Query)('page')),
+    __param(1, (0, common_1.Query)('limit')),
+    __param(2, (0, common_1.Query)('username')),
+    __param(3, (0, common_1.Req)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object]),
+    __metadata("design:paramtypes", [Number, Number, String, Object]),
     __metadata("design:returntype", rxjs_1.Observable)
 ], UserController.prototype, "findAll", null);
 __decorate([
@@ -162,7 +166,7 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], UserController.prototype, "saveImage", null);
 UserController = __decorate([
-    (0, common_1.Controller)('user'),
+    (0, common_1.Controller)('api'),
     (0, swagger_1.ApiTags)('todos'),
     __metadata("design:paramtypes", [user_service_1.UserService])
 ], UserController);

@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Param, Delete, HttpCode, UseGuards, Req, UseInterceptors, UploadedFile, Put } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Delete, HttpCode, UseGuards, Req, UseInterceptors, UploadedFile, Put, Query } from '@nestjs/common';
 import { UserService } from './user.service';
 import { User, UserRole } from './entities/user.entity';
 import { from, map, Observable } from 'rxjs';
@@ -17,11 +17,12 @@ import { DeleteResult } from 'typeorm';
 import { hasRoles } from 'src/auth/decorator/roles.decorator';
 import { RolesGuard } from 'src/auth/guards/roles.guards';
 import { ApiTags } from '@nestjs/swagger';
+import { Pagination } from 'nestjs-typeorm-paginate';
 const maxSize = 10 * 1024 * 1024;
 
 
 
-@Controller('user')
+@Controller('api')
 @ApiTags('todos')
 export class UserController {
   SERVER_URL:  string  =  "http://localhost:3000/";
@@ -63,9 +64,14 @@ export class UserController {
     // Requires Valid JWT from Login Request
     @hasRoles(UserRole.Admin)
     @UseGuards(JwtAuthGuard, RolesGuard)
-    @Get()
-    findAll(@Req() request): Observable<User[]> {
-      return this.userService.findAll();
+    @Get('user')
+    findAll( @Query('page') page: number = 1,
+    @Query('limit') limit: number = 10,
+    @Query('username') username: string, 
+    @Req() request): Observable<Pagination<User>> {
+      limit = limit > 100 ? 100 : limit;
+        return this.userService.paginate({ page: Number(page), limit: Number(limit), route: 'http://localhost:3000/api/user' });
+  
     }
 
     @Put('edit/:id')
