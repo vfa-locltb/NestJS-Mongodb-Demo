@@ -29,6 +29,6 @@ __decorate([
 __decorate([
     (0, swagger_1.ApiProperty)(),
     __metadata("design:type", String)
-], CreateUserDto.prototype, "token", void 0);
+], CreateUserDto.prototype, "code", void 0);
 exports.CreateUserDto = CreateUserDto;
 //# sourceMappingURL=create-user.dto.js.map

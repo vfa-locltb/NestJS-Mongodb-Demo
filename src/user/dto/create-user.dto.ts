@@ -14,6 +14,6 @@ export class CreateUserDto extends LoginUserDto {
     role: UserRole;
 
     @ApiProperty()
-    token: string;
+    code: string;
 
 }

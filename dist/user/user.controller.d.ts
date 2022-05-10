@@ -24,7 +24,7 @@ export declare class UserController {
     forgot(email: string): Promise<{
         massage: string;
     }>;
-    reset(token: string, password: string, password_confirm: string): Promise<{
+    reset(code: string, password: string, password_confirm: string): Promise<{
         massage: string;
     }>;
     changePassword(email: string, old_password: string, new_password: string, confirm_password: string): Promise<{

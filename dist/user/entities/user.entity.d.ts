@@ -11,6 +11,6 @@ export declare class User {
     role: UserRole;
     profileImage: string;
     password: string;
-    token: string;
+    code: string;
     emailToLowerCase(): void;
 }

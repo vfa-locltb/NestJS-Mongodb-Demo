@@ -85,23 +85,23 @@ let UserController = class UserController {
         }
     }
     async forgot(email) {
-        const token = Math.floor(100000 + Math.random() * 900000).toString();
+        const code = Math.floor(100000 + Math.random() * 900000).toString();
         const user = await this.userService.findOnes({ email });
-        await this.userService.updateToken(user.id, { token });
+        await this.userService.updateToken(user.id, { code });
         await this.mailerService.sendMail({
             to: email,
             subject: 'Reset Your Password !',
-            html: `<h2><strong>Code: <strong/><b style="color: blue">${token}<b/></h2> `,
+            html: `<h2><strong>Code: <strong/><b style="color: blue">${code}<b/></h2> `,
         });
         return {
             massage: 'Please check your email !'
         };
     }
-    async reset(token, password, password_confirm) {
+    async reset(code, password, password_confirm) {
         if (password !== password_confirm) {
             throw new common_1.BadRequestException('password do not match');
         }
-        const passwordReset = await this.userService.findOnes({ token });
+        const passwordReset = await this.userService.findOnes({ code });
         if (!passwordReset) {
             throw new common_1.NotFoundException('Verify code not successful !');
         }

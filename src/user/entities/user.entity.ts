@@ -33,7 +33,7 @@ export class User {
 
     @Column()
     @ApiProperty()
-    token: string
+    code: string
 
     @BeforeInsert()
     emailToLowerCase(){

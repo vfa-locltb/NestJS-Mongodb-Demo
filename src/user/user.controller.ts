@@ -134,11 +134,11 @@ export class UserController {
   @Post('forgotPassword')
   async forgot(@Body('email') email: string)
   {
-    const token = Math.floor(100000 + Math.random() * 900000).toString();
+    const code = Math.floor(100000 + Math.random() * 900000).toString();
 
     const user: any = await this.userService.findOnes({email});
   
-    await this.userService.updateToken(user.id,{token})
+    await this.userService.updateToken(user.id,{code})
     
     // const url = `http://localhost:3000/reset/${token}`;
 
@@ -146,7 +146,7 @@ export class UserController {
       {
         to: email,
         subject: 'Reset Your Password !',
-        html: `<h2><strong>Code: <strong/><b style="color: blue">${token}<b/></h2> `,
+        html: `<h2><strong>Code: <strong/><b style="color: blue">${code}<b/></h2> `,
       }
     );
 
@@ -157,14 +157,14 @@ export class UserController {
 
 
   @Post('resetPassword')
-  async reset(@Body('token') token: string, @Body('password') password: string, @Body('password_confirm') password_confirm: string)
+  async reset(@Body('token') code: string, @Body('password') password: string, @Body('password_confirm') password_confirm: string)
   {
     if(password !== password_confirm)
     {
       throw new BadRequestException('password do not match');
     }
 
-    const passwordReset: any = await this.userService.findOnes({token});
+    const passwordReset: any = await this.userService.findOnes({code});
 
     if(!passwordReset)
     {
