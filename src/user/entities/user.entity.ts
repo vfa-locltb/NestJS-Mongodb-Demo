@@ -31,6 +31,10 @@ export class User {
     @ApiProperty()
     password: string;
 
+    @Column()
+    @ApiProperty()
+    token: string
+
     @BeforeInsert()
     emailToLowerCase(){
         this.email = this.email.toLowerCase();

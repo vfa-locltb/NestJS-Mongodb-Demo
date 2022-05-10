@@ -5,11 +5,13 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { LoginUserDto } from './dto/login-user.dto';
 import { DeleteResult } from 'typeorm';
 import { Pagination } from 'nestjs-typeorm-paginate';
+import { MailerService } from '@nestjs-modules/mailer';
 export declare class UserController {
     private readonly userService;
+    private mailerService;
     SERVER_URL: string;
     private readonly sizes;
-    constructor(userService: UserService);
+    constructor(userService: UserService, mailerService: MailerService);
     create(createUserDto: CreateUserDto): Observable<User>;
     findOne(id: string): Observable<User>;
     login(loginUserDto: LoginUserDto): Observable<Object>;
@@ -19,4 +21,13 @@ export declare class UserController {
     delete(id: string): Promise<DeleteResult>;
     uploadFile(id: string, file: any): Promise<Observable<User>>;
     private saveImage;
+    forgot(email: string): Promise<{
+        massage: string;
+    }>;
+    reset(token: string, password: string, password_confirm: string): Promise<{
+        massage: string;
+    }>;
+    changePassword(email: string, old_password: string, new_password: string, confirm_password: string): Promise<{
+        massage: string;
+    }>;
 }

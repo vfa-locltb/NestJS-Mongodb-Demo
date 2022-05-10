@@ -53,6 +53,9 @@ let UserService = class UserService {
             }
         }));
     }
+    createToken(body) {
+        return this.userRepository.create(body);
+    }
     login(loginUserDto) {
         return this.findUserByEmail(loginUserDto.email.toLowerCase()).pipe((0, rxjs_1.switchMap)((user) => {
             if (user) {
@@ -73,6 +76,9 @@ let UserService = class UserService {
     findOne(id) {
         return (0, rxjs_1.from)(this.userRepository.findOne(id));
     }
+    findOnes(id) {
+        return this.userRepository.findOne(id);
+    }
     findAll() {
         return (0, rxjs_1.from)(this.userRepository.find());
     }
@@ -90,8 +96,17 @@ let UserService = class UserService {
         this.userRepository.update(id, user);
         return this.findOne(id);
     }
+    updatePassword(id, data) {
+        return (0, rxjs_1.from)(this.userRepository.update(id, data));
+    }
+    updateToken(id, data) {
+        return (0, rxjs_1.from)(this.userRepository.update(id, data));
+    }
     delete(id) {
         return this.userRepository.delete(id);
+    }
+    checkPassword(password, old_password) {
+        return this.authService.comparePasswords(password, old_password);
     }
     findUserByEmail(email) {
         return (0, rxjs_1.from)(this.userRepository.findOne({ email }, { select: ['id', 'name', 'email', 'password'] }));

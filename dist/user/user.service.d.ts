@@ -10,13 +10,18 @@ export declare class UserService {
     private readonly authService;
     constructor(userRepository: Repository<User>, authService: AuthService);
     create(CreateUserDto: CreateUserDto): Observable<any>;
+    createToken(body: any): User[];
     login(loginUserDto: LoginUserDto): Observable<string>;
     findOne(id: any): Observable<User>;
+    findOnes(id: any): Promise<any>;
     findAll(): Observable<User[]>;
     paginate(options: IPaginationOptions): Observable<Pagination<User>>;
     update(id: string, user: User): Observable<User>;
     updateRole(id: string, user: User): Observable<any>;
+    updatePassword(id: string, data: any): Observable<any>;
+    updateToken(id: string, data: any): Observable<any>;
     delete(id: any): Promise<DeleteResult>;
+    checkPassword(password: string, old_password: string): Observable<any>;
     private findUserByEmail;
     private validatePassword;
     private mailExists;

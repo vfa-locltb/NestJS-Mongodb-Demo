@@ -53,6 +53,11 @@ __decorate([
     __metadata("design:type", String)
 ], User.prototype, "password", void 0);
 __decorate([
+    (0, typeorm_1.Column)(),
+    (0, swagger_1.ApiProperty)(),
+    __metadata("design:type", String)
+], User.prototype, "token", void 0);
+__decorate([
     (0, typeorm_1.BeforeInsert)(),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),

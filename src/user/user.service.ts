@@ -42,6 +42,9 @@ export class UserService {
   )
 }
 
+createToken(body: any){
+  return this.userRepository.create(body);
+}
 login(loginUserDto: LoginUserDto): Observable<string> {
   return this.findUserByEmail(loginUserDto.email.toLowerCase()).pipe(
     switchMap((user: User) => {
@@ -70,6 +73,11 @@ findOne(id: any): Observable<User> {
   return from(this.userRepository.findOne(id));
 }
 
+findOnes(id: any): Promise<any>
+{
+  return this.userRepository.findOne(id);
+}
+
  findAll(): Observable<User[]>{
    return from(this.userRepository.find());
  }
@@ -93,9 +101,20 @@ findOne(id: any): Observable<User> {
     return this.findOne(id);
   }
 
+  updatePassword(id: string, data: any): Observable<any> {
+    return from( this.userRepository.update(id,data));
+  }
+  updateToken(id: string, data: any): Observable<any> {
+    return from( this.userRepository.update(id,data));
+  }
+
 delete(id): Promise<DeleteResult> {
   return this.userRepository.delete(id);
 }
+checkPassword(password: string, old_password:string)
+{
+  return this.authService.comparePasswords(password, old_password);
+} 
 
 
  private findUserByEmail(email: string): Observable<User>{
@@ -105,6 +124,8 @@ delete(id): Promise<DeleteResult> {
  private validatePassword(password: string, storedPasswordHash: string): Observable<boolean>{
    return this.authService.comparePasswords(password, storedPasswordHash);
  }
+
+
 
  private mailExists(email: string): Observable<boolean> {
   email = email.toLowerCase();
