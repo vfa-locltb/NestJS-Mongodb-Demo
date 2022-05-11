@@ -1,4 +1,5 @@
-node_modules
-mongo
-.env
-uploads
+/node_modules
+/mongo
+/.env
+/uploads
+/dist
