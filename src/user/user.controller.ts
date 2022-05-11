@@ -138,9 +138,9 @@ export class UserController {
 
     const user: any = await this.userService.findOnes({email});
   
-    await this.userService.updateToken(user.id,{code})
+    await this.userService.updateCode(user.id,{code})
     
-    // const url = `http://localhost:3000/reset/${token}`;
+    // const url = `http://localhost:3000/reset/${code}`;
 
     await this.mailerService.sendMail(
       {
@@ -172,7 +172,7 @@ export class UserController {
     }
 
     const user = await this.userService.findOnes({email: passwordReset.email});
-
+    
     if(!user)
     {
       throw new NotFoundException('User not found !');

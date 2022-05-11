@@ -53,7 +53,7 @@ let UserService = class UserService {
             }
         }));
     }
-    createToken(body) {
+    createCode(body) {
         return this.userRepository.create(body);
     }
     login(loginUserDto) {
@@ -99,7 +99,7 @@ let UserService = class UserService {
     updatePassword(id, data) {
         return (0, rxjs_1.from)(this.userRepository.update(id, data));
     }
-    updateToken(id, data) {
+    updateCode(id, data) {
         return (0, rxjs_1.from)(this.userRepository.update(id, data));
     }
     delete(id) {

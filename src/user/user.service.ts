@@ -42,7 +42,7 @@ export class UserService {
   )
 }
 
-createToken(body: any){
+createCode(body: any){
   return this.userRepository.create(body);
 }
 login(loginUserDto: LoginUserDto): Observable<string> {
@@ -104,7 +104,7 @@ findOnes(id: any): Promise<any>
   updatePassword(id: string, data: any): Observable<any> {
     return from( this.userRepository.update(id,data));
   }
-  updateToken(id: string, data: any): Observable<any> {
+  updateCode(id: string, data: any): Observable<any> {
     return from( this.userRepository.update(id,data));
   }
 

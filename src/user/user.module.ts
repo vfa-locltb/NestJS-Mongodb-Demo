@@ -6,16 +6,18 @@ import { User } from './entities/user.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ValidateUserMiddleware } from 'src/middleware/validate.user.middleware';
 import { MailerModule } from '@nestjs-modules/mailer';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [TypeOrmModule.forFeature([User]),
+  ConfigModule.forRoot({ envFilePath: `${process.env.NODE_ENV}.env` }), 
   MailerModule.forRoot({
     transport: {
-      host: 'smtp.gmail.com', 
-      port: 465,
+      host: process.env.M_HOST, 
+      port: parseInt(process.env.M_PORT,10),
       auth: {
-          user: 'chuongnvt@vitalify.asia',
-          pass: 'taqazqbvisoghhkl'
+          user: process.env.M_USER,
+          pass: process.env.M_PASS
       }
 
     },

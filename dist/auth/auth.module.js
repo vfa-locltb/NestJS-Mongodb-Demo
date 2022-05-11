@@ -26,7 +26,7 @@ AuthModule = __decorate([
                 imports: [config_1.ConfigModule],
                 inject: [config_1.ConfigService],
                 useFactory: async (configService) => ({
-                    secret: 'secret',
+                    secret: process.env.S_KEY,
                     signOptions: { expiresIn: '10000s' },
                 }),
             }),

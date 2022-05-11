@@ -15,6 +15,7 @@ const user_entity_1 = require("./entities/user.entity");
 const typeorm_1 = require("@nestjs/typeorm");
 const validate_user_middleware_1 = require("../middleware/validate.user.middleware");
 const mailer_1 = require("@nestjs-modules/mailer");
+const config_1 = require("@nestjs/config");
 let UserModule = class UserModule {
     configure(consumer) {
         consumer.apply(validate_user_middleware_1.ValidateUserMiddleware).exclude({
@@ -26,13 +27,14 @@ let UserModule = class UserModule {
 UserModule = __decorate([
     (0, common_1.Module)({
         imports: [typeorm_1.TypeOrmModule.forFeature([user_entity_1.User]),
+            config_1.ConfigModule.forRoot({ envFilePath: `${process.env.NODE_ENV}.env` }),
             mailer_1.MailerModule.forRoot({
                 transport: {
-                    host: 'smtp.gmail.com',
-                    port: 465,
+                    host: process.env.M_HOST,
+                    port: parseInt(process.env.M_PORT, 10),
                     auth: {
-                        user: 'chuongnvt@vitalify.asia',
-                        pass: 'taqazqbvisoghhkl'
+                        user: process.env.M_USER,
+                        pass: process.env.M_PASS
                     }
                 },
                 preview: true,

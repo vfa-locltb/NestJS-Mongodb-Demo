@@ -87,7 +87,7 @@ let UserController = class UserController {
     async forgot(email) {
         const code = Math.floor(100000 + Math.random() * 900000).toString();
         const user = await this.userService.findOnes({ email });
-        await this.userService.updateToken(user.id, { code });
+        await this.userService.updateCode(user.id, { code });
         await this.mailerService.sendMail({
             to: email,
             subject: 'Reset Your Password !',

@@ -5,12 +5,12 @@ import {
 } from '@nestjs/typeorm';
 
 export const typeOrmAsyncConfig: TypeOrmModuleAsyncOptions = {
-  imports: [ConfigModule],
+  imports: [ConfigModule.forRoot()],
   inject: [ConfigService],
   useFactory: async (): Promise<TypeOrmModuleOptions> => {
     return {
       type: 'mongodb',
-      url: 'mongodb+srv://chuongnvt:chuongnvt@cluster0.uosty.mongodb.net/nestjs-mongodb-demo?retryWrites=true&w=majority',
+      url: `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@cluster0.uosty.mongodb.net/${process.env.DB_NAME}?retryWrites=true&w=majority`,
       // host: process.env.DB_HOST,
       // port: parseInt(process.env.DB_PORT, 10),
       // username: process.env.DB_USERNAME,
@@ -32,7 +32,7 @@ export const typeOrmAsyncConfig: TypeOrmModuleAsyncOptions = {
 
 export const typeOrmConfig: TypeOrmModuleOptions = {
   type: 'mongodb',
-  url: 'mongodb+srv://chuongnvt:chuongnvt@cluster0.uosty.mongodb.net/nestjs-mongodb-demo?retryWrites=true&w=majority',
+  url: `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@cluster0.uosty.mongodb.net/${process.env.DB_NAME}?retryWrites=true&w=majority`,
       // host: process.env.DB_HOST,
       // port: parseInt(process.env.DB_PORT, 10),
       // username: process.env.DB_USERNAME,
