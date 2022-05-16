@@ -1,5 +1,5 @@
-/node_modules
-/mongo
-/.env
-/uploads
-/dist
+node_modules/
+mongo
+.env
+uploads
+/dist/

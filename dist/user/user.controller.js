@@ -17,8 +17,6 @@ const common_1 = require("@nestjs/common");
 const user_service_1 = require("./user.service");
 const user_entity_1 = require("./entities/user.entity");
 const rxjs_1 = require("rxjs");
-const create_user_dto_1 = require("./dto/create-user.dto");
-const login_user_dto_1 = require("./dto/login-user.dto");
 const jwt_guards_1 = require("../auth/guards/jwt.guards");
 const platform_express_1 = require("@nestjs/platform-express");
 const path_1 = require("path");
@@ -31,30 +29,16 @@ const sharp = require("sharp");
 const roles_decorator_1 = require("../auth/decorator/roles.decorator");
 const roles_guards_1 = require("../auth/guards/roles.guards");
 const swagger_1 = require("@nestjs/swagger");
-const mailer_1 = require("@nestjs-modules/mailer");
 const maxSize = 10 * 1024 * 1024;
 const bcrypt = require('bcrypt');
 let UserController = class UserController {
-    constructor(userService, mailerService) {
+    constructor(userService) {
         this.userService = userService;
-        this.mailerService = mailerService;
         this.SERVER_URL = "http://localhost:3000/";
         this.sizes = ['50X50', '100X100', '200X200'];
     }
-    create(createUserDto) {
-        return (0, rxjs_1.from)(this.userService.create(createUserDto));
-    }
     findOne(id) {
         return (0, rxjs_1.from)(this.userService.findOne(id));
-    }
-    login(loginUserDto) {
-        return this.userService.login(loginUserDto).pipe((0, rxjs_1.map)((jwt) => {
-            return {
-                access_token: jwt,
-                token_type: 'jwt',
-                expires_in: 10000
-            };
-        }));
     }
     findAll(page = 1, limit = 10, username, request) {
         limit = limit > 100 ? 100 : limit;
@@ -84,60 +68,7 @@ let UserController = class UserController {
             });
         }
     }
-    async forgot(email) {
-        const code = Math.floor(100000 + Math.random() * 900000).toString();
-        const user = await this.userService.findOnes({ email });
-        await this.userService.updateCode(user.id, { code });
-        await this.mailerService.sendMail({
-            to: email,
-            subject: 'Reset Your Password !',
-            html: `<h2><strong>Code: <strong/><b style="color: blue">${code}<b/></h2> `,
-        });
-        return {
-            massage: 'Please check your email !'
-        };
-    }
-    async reset(code, password, password_confirm) {
-        if (password !== password_confirm) {
-            throw new common_1.BadRequestException('password do not match');
-        }
-        const passwordReset = await this.userService.findOnes({ code });
-        if (!passwordReset) {
-            throw new common_1.NotFoundException('Verify code not successful !');
-        }
-        const user = await this.userService.findOnes({ email: passwordReset.email });
-        if (!user) {
-            throw new common_1.NotFoundException('User not found !');
-        }
-        const hashedPassword = await bcrypt.hash(password, 12);
-        await this.userService.updatePassword(user.id, { password: hashedPassword });
-        return {
-            massage: 'Reset Password Successful !'
-        };
-    }
-    async changePassword(email, old_password, new_password, confirm_password) {
-        const user = await this.userService.findOnes({ email });
-        if (!user) {
-            throw new common_1.NotFoundException('User not found !');
-        }
-        await this.userService.checkPassword(old_password, user.password);
-        if (new_password !== confirm_password) {
-            throw new common_1.NotFoundException('Password do not match');
-        }
-        const hashedPassword = await bcrypt.hash(new_password, 12);
-        await this.userService.updatePassword(user.id, { password: hashedPassword });
-        return {
-            massage: 'Change password successful !'
-        };
-    }
 };
-__decorate([
-    (0, common_1.Post)('/register'),
-    __param(0, (0, common_1.Body)()),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [create_user_dto_1.CreateUserDto]),
-    __metadata("design:returntype", rxjs_1.Observable)
-], UserController.prototype, "create", null);
 __decorate([
     (0, common_1.Get)('user/:id'),
     __param(0, (0, common_1.Param)('id')),
@@ -145,14 +76,6 @@ __decorate([
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", rxjs_1.Observable)
 ], UserController.prototype, "findOne", null);
-__decorate([
-    (0, common_1.Post)('login'),
-    (0, common_1.HttpCode)(200),
-    __param(0, (0, common_1.Body)()),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [login_user_dto_1.LoginUserDto]),
-    __metadata("design:returntype", rxjs_1.Observable)
-], UserController.prototype, "login", null);
 __decorate([
     (0, roles_decorator_1.hasRoles)(user_entity_1.UserRole.Admin),
     (0, common_1.UseGuards)(jwt_guards_1.JwtAuthGuard, roles_guards_1.RolesGuard),
@@ -214,36 +137,10 @@ __decorate([
     __metadata("design:paramtypes", [String, Object]),
     __metadata("design:returntype", void 0)
 ], UserController.prototype, "saveImage", null);
-__decorate([
-    (0, common_1.Post)('forgotPassword'),
-    __param(0, (0, common_1.Body)('email')),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String]),
-    __metadata("design:returntype", Promise)
-], UserController.prototype, "forgot", null);
-__decorate([
-    (0, common_1.Post)('resetPassword'),
-    __param(0, (0, common_1.Body)('token')),
-    __param(1, (0, common_1.Body)('password')),
-    __param(2, (0, common_1.Body)('password_confirm')),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, String, String]),
-    __metadata("design:returntype", Promise)
-], UserController.prototype, "reset", null);
-__decorate([
-    (0, common_1.Post)('changePassword'),
-    __param(0, (0, common_1.Body)('email')),
-    __param(1, (0, common_1.Body)('old_password')),
-    __param(2, (0, common_1.Body)('new_password')),
-    __param(3, (0, common_1.Body)('confirm_password')),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, String, String, String]),
-    __metadata("design:returntype", Promise)
-], UserController.prototype, "changePassword", null);
 UserController = __decorate([
     (0, common_1.Controller)('api'),
     (0, swagger_1.ApiTags)('todos'),
-    __metadata("design:paramtypes", [user_service_1.UserService, mailer_1.MailerService])
+    __metadata("design:paramtypes", [user_service_1.UserService])
 ], UserController);
 exports.UserController = UserController;
 //# sourceMappingURL=user.controller.js.map

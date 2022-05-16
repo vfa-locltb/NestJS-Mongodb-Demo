@@ -7,27 +7,12 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ValidateUserMiddleware } from 'src/middleware/validate.user.middleware';
 import { MailerModule } from '@nestjs-modules/mailer';
 import { ConfigModule } from '@nestjs/config';
+import { LoginModule } from 'src/login/login.module';
 
 @Module({
   imports: [TypeOrmModule.forFeature([User]),
   ConfigModule.forRoot({ envFilePath: `${process.env.NODE_ENV}.env` }), 
-  MailerModule.forRoot({
-    transport: {
-      host: process.env.M_HOST, 
-      port: parseInt(process.env.M_PORT,10),
-      auth: {
-          user: process.env.M_USER,
-          pass: process.env.M_PASS
-      }
-
-    },
-    preview: true,
-    defaults: {
-                from: '"No Reply" <noreply@example.com>',
-            },
-
-  })
-  ,AuthModule,
+  AuthModule, LoginModule
 ],
   controllers: [UserController],
   providers: [UserService],
